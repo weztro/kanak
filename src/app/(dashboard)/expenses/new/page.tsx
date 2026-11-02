@@ -2,6 +2,8 @@ import * as React from "react";
 import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { NewExpenseForm } from "./NewExpenseForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewExpensePage() {
   const members = await getActiveAccommodationMembers();
 

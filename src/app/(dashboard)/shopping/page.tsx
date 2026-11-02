@@ -4,6 +4,8 @@ import { getInventoryItems } from "@/server/actions/inventory";
 import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { ShoppingListClient } from "./ShoppingListClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function ShoppingPage() {
   const shoppingItems = await getShoppingListItems();
   const catalogItems = await getInventoryItems();

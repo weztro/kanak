@@ -7,6 +7,8 @@ import { getSettlementHistory, getMemberBalancesData } from "@/server/actions/se
 import { getInventoryItems } from "@/server/actions/inventory";
 import { ReportsClient } from "./ReportsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportsPage() {
   const purchases = await getPurchases();
   const expenses = await getExpenses();

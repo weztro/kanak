@@ -4,6 +4,8 @@ import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { getActiveAccommodationId, getUserAccommodations } from "@/server/actions/accommodation";
 import { ContributionsClient } from "./ContributionsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function ContributionsPage() {
   const contributions = await getContributions();
   const fundTransactions = await getFundTransactions();

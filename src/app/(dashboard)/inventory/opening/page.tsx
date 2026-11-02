@@ -2,6 +2,8 @@ import * as React from "react";
 import { getCategories, getInventoryItems } from "@/server/actions/inventory";
 import { OpeningInventoryWizard } from "./OpeningInventoryWizard";
 
+export const dynamic = "force-dynamic";
+
 export default async function OpeningInventoryPage() {
   const items = await getInventoryItems();
   const categories = await getCategories();

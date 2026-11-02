@@ -3,6 +3,8 @@ import { getMemberBalancesData, getSettlementHistory } from "@/server/actions/se
 import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { SettlementsClient } from "./SettlementsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettlementsPage() {
   const { balances, suggestions } = await getMemberBalancesData();
   const settlements = await getSettlementHistory();

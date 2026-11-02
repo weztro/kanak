@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { PurchaseDetailClient } from "./PurchaseDetailClient";
 import { ExpenseAllocation } from "@/types/database";
 
+export const dynamic = "force-dynamic";
+
 export default async function PurchaseDetailPage({
   params,
 }: {

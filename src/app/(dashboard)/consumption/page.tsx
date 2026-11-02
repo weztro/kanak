@@ -2,6 +2,8 @@ import * as React from "react";
 import { getConsumptionLogs } from "@/server/actions/consumption";
 import { ConsumptionClient } from "./ConsumptionClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function ConsumptionPage() {
   const logs = await getConsumptionLogs();
 

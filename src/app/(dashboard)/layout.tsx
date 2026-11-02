@@ -8,6 +8,8 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { QuickActionFAB } from "@/components/layout/QuickActionFAB";
 import { PwaInstallBanner } from "@/components/pwa/PwaInstallBanner";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
 }: {

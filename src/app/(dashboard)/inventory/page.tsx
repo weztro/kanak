@@ -2,6 +2,8 @@ import * as React from "react";
 import { getCategories, getInventoryItems } from "@/server/actions/inventory";
 import { InventoryClient } from "./InventoryClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function InventoryPage() {
   const categories = await getCategories();
   const items = await getInventoryItems();

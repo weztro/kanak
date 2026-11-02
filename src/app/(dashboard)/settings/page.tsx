@@ -2,6 +2,8 @@ import * as React from "react";
 import { getActiveAccommodationId, getUserAccommodations } from "@/server/actions/accommodation";
 import { SettingsClient } from "./SettingsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettingsPage() {
   const accId = await getActiveAccommodationId();
   const accommodations = await getUserAccommodations();

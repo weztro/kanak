@@ -3,6 +3,8 @@ import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { getActiveAccommodationId, getUserAccommodations } from "@/server/actions/accommodation";
 import { MembersClient } from "./MembersClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function MembersPage() {
   const activeAccId = await getActiveAccommodationId();
   const accommodations = await getUserAccommodations();

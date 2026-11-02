@@ -3,6 +3,8 @@ import { getInventoryItems } from "@/server/actions/inventory";
 import { getActiveAccommodationMembers } from "@/server/actions/members";
 import { NewConsumptionForm } from "./NewConsumptionForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewConsumptionPage() {
   const items = await getInventoryItems();
   const members = await getActiveAccommodationMembers();
