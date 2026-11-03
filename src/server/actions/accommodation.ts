@@ -1,6 +1,6 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { createAccommodationSchema, inviteMemberSchema } from "@/lib/validations/accommodation";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
@@ -150,8 +150,9 @@ export async function createAccommodationAction(values: unknown): Promise<Accomm
     return { success: false, error: accError?.message || "Failed to create accommodation" };
   }
 
-  // 2. Add creator as admin
-  const { error: memError } = await supabase.from("members").insert({
+  // 2. Add creator as admin using admin client to ensure clean setup
+  const adminClient = createAdminClient();
+  const { error: memError } = await adminClient.from("members").insert({
     accommodation_id: acc.id,
     profile_id: user.id,
     role: "admin",
@@ -178,7 +179,8 @@ export async function createAccommodationAction(values: unknown): Promise<Accomm
  * Join an accommodation using its unique invite code.
  */
 export async function joinAccommodationByCodeAction(inviteCode: string): Promise<AccommodationResponse> {
-  if (!inviteCode?.trim()) {
+  const cleanCode = inviteCode?.trim();
+  if (!cleanCode) {
     return { success: false, error: "Please provide a valid invite code" };
   }
 
@@ -188,11 +190,15 @@ export async function joinAccommodationByCodeAction(inviteCode: string): Promise
     return { success: false, error: "Please log in first" };
   }
 
-  // Find accommodation
-  const { data: acc, error: findError } = await supabase
+  // Use admin client to query accommodation by invite code and insert membership,
+  // bypassing RLS since non-members cannot query accommodations they do not yet belong to.
+  const adminClient = createAdminClient();
+
+  // Find accommodation (case-insensitive)
+  const { data: acc, error: findError } = await adminClient
     .from("accommodations")
     .select("id, name")
-    .eq("invite_code", inviteCode.trim())
+    .ilike("invite_code", cleanCode)
     .maybeSingle();
 
   if (findError || !acc) {
@@ -200,7 +206,7 @@ export async function joinAccommodationByCodeAction(inviteCode: string): Promise
   }
 
   // Check if already a member
-  const { data: existing } = await supabase
+  const { data: existing } = await adminClient
     .from("members")
     .select("id, is_active")
     .eq("accommodation_id", acc.id)
@@ -209,14 +215,14 @@ export async function joinAccommodationByCodeAction(inviteCode: string): Promise
 
   if (existing) {
     if (!existing.is_active) {
-      await supabase.from("members").update({ is_active: true }).eq("id", existing.id);
+      await adminClient.from("members").update({ is_active: true }).eq("id", existing.id);
     }
   } else {
-    // Add user as regular member (never admin)
-    const { error: joinError } = await supabase.from("members").insert({
+    // Add user as regular member (strictly enforced: never admin)
+    const { error: joinError } = await adminClient.from("members").insert({
       accommodation_id: acc.id,
       profile_id: user.id,
-      role: "member", // enforced: non-admins cannot self-assign admin
+      role: "member",
       is_active: true,
     });
     if (joinError) {
