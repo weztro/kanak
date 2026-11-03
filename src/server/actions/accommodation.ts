@@ -39,11 +39,15 @@ export async function getActiveAccommodationId(): Promise<string | null> {
     .maybeSingle();
 
   if (data?.accommodation_id) {
-    cookieStore.set(CURRENT_ACCOMMODATION_COOKIE, data.accommodation_id, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      sameSite: "lax",
-    });
+    try {
+      cookieStore.set(CURRENT_ACCOMMODATION_COOKIE, data.accommodation_id, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        sameSite: "lax",
+      });
+    } catch {
+      // Ignored: Server Component render pass cannot modify cookies, return id directly
+    }
     return data.accommodation_id;
   }
 
