@@ -16,11 +16,13 @@ import {
   BarChart3,
   Users,
   Settings,
+  Tag,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Inventory", href: "/inventory", icon: Package },
+  { label: "Categories", href: "/categories", icon: Tag },
   { label: "Purchases", href: "/purchases", icon: ShoppingCart },
   { label: "Daily Cooking", href: "/consumption", icon: UtensilsCrossed },
   { label: "Shopping List", href: "/shopping", icon: ListTodo },

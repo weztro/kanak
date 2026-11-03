@@ -4,9 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import { Accommodation } from "@/types/database";
 import { AccommodationSwitcher } from "./AccommodationSwitcher";
-import { logoutAction } from "@/server/actions/auth";
+import { UserProfileMenu } from "@/components/profile/UserProfileMenu";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { LogOut, Bell, User } from "lucide-react";
+import { Bell } from "lucide-react";
 
 interface HeaderProps {
   accommodations: Accommodation[];
@@ -42,6 +43,9 @@ export function Header({
       </div>
 
       <div className="flex items-center space-x-2">
+        {/* Quick Theme Toggle Icon */}
+        <ThemeToggle variant="button" />
+
         <Button
           variant="ghost"
           size="icon"
@@ -54,31 +58,13 @@ export function Header({
           </Link>
         </Button>
 
-        <div className="hidden sm:flex items-center space-x-2 pl-2 border-l border-neutral-200 dark:border-neutral-800">
-          <div className="h-7 w-7 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-            {userName ? userName.charAt(0).toUpperCase() : <User className="h-3.5 w-3.5" />}
-          </div>
-          <div className="flex flex-col text-left">
-            <span className="text-xs font-medium text-neutral-800 dark:text-neutral-200 leading-none">
-              {userName || "Bachelor"}
-            </span>
-            <span className="text-[10px] text-neutral-400 leading-none mt-0.5">
-              {userEmail || ""}
-            </span>
-          </div>
+        {/* User Profile Menu with Theme Toggle & Profile Editing */}
+        <div className="pl-1 border-l border-neutral-200 dark:border-neutral-800">
+          <UserProfileMenu
+            userName={userName}
+            userEmail={userEmail}
+          />
         </div>
-
-        <form action={logoutAction}>
-          <Button
-            variant="ghost"
-            size="icon"
-            type="submit"
-            className="h-8 w-8 text-neutral-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
-            title="Sign out"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </form>
       </div>
     </header>
   );

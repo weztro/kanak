@@ -26,6 +26,7 @@ import {
   BarChart3,
   Users,
   Settings,
+  Tag,
 } from "lucide-react";
 
 export function MobileNav() {
@@ -40,6 +41,7 @@ export function MobileNav() {
   ];
 
   const moreNav = [
+    { label: "Categories", href: "/categories", icon: Tag },
     { label: "Purchases", href: "/purchases", icon: ShoppingCart },
     { label: "Daily Cooking", href: "/consumption", icon: UtensilsCrossed },
     { label: "Monthly Contributions", href: "/contributions", icon: Coins },

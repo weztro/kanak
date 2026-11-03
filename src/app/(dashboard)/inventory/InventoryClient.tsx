@@ -33,6 +33,7 @@ import {
   History,
   AlertTriangle,
   Loader2,
+  Tag,
   Trash2,
   ArrowRight,
   TrendingUp,
@@ -187,6 +188,11 @@ export function InventoryClient({ items, categories }: Props) {
           </p>
         </div>
         <div className="flex items-center space-x-2">
+          <Link href="/categories">
+            <Button variant="outline" size="sm" className="text-xs h-8">
+              <Tag className="mr-1.5 h-3.5 w-3.5 text-neutral-500" /> Categories
+            </Button>
+          </Link>
           <Link href="/inventory/opening">
             <Button variant="outline" size="sm" className="text-xs h-8">
               <History className="mr-1.5 h-3.5 w-3.5" /> Opening Stock Setup
