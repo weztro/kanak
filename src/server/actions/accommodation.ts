@@ -128,7 +128,8 @@ export async function createAccommodationAction(values: unknown): Promise<Accomm
   }
 
   // Ensure user profile exists
-  await supabase.from("profiles").upsert({
+  const adminClient = createAdminClient();
+  await adminClient.from("profiles").upsert({
     id: user.id,
     full_name: user.user_metadata?.full_name || user.email?.split("@")[0] || "User",
   });
@@ -151,7 +152,6 @@ export async function createAccommodationAction(values: unknown): Promise<Accomm
   }
 
   // 2. Add creator as admin using admin client to ensure clean setup
-  const adminClient = createAdminClient();
   const { error: memError } = await adminClient.from("members").insert({
     accommodation_id: acc.id,
     profile_id: user.id,
@@ -204,6 +204,12 @@ export async function joinAccommodationByCodeAction(inviteCode: string): Promise
   if (findError || !acc) {
     return { success: false, error: "Invalid invite code or accommodation not found." };
   }
+
+  // Ensure user profile exists in public.profiles to satisfy foreign key constraint
+  await adminClient.from("profiles").upsert({
+    id: user.id,
+    full_name: user.user_metadata?.full_name || user.email?.split("@")[0] || "User",
+  });
 
   // Check if already a member
   const { data: existing } = await adminClient
